@@ -1,0 +1,236 @@
+---------- Linkedin React Essential Training ----------
+
+https://www.linkedin.com/learning/react-js-essential-training-3/working-with-the-exercise-files?u=81030314
+Visual Studio Code (https://code/visualstudio/com)
+reactjs.org
+
+React extensions
+chrome extensions > React developer tools > Add to Chrome
+
+Download & install Node.js (https://nodejs.org/en/)
+
+Create React App: sudo npm install -g create-react-app
+
+Create a new project: create-react-app react-is-fun
+Start host:
+  cd react-is-fun
+  npm install (not always needed)
+  npm start
+  http://localhost:3000/
+
+Libraries
+"react": "^16.13.1",      -- Main component
+"react-dom": "^16.13.1",  -- render
+"react-scripts": "3.4.1"  -- magic
+
+
+Elements vs JSX (JavaScript as XML) CH02 > 02_03
+- Elements
+  const title = React.createElement(
+    'h1',
+    {id: 'title', className: 'header', style: style},
+    'Hello World'
+  )
+
+  ReactDOM.render(
+    title,
+    document.getElementById('root')
+  )
+
+- JSX
+  ReactDOM.render(
+    <div style={style}>
+      <h1 id = 'heading-element'>Hello World!</h1>
+      <p>we are glad you are here</p>
+    </div>,
+    document.getElementById('root')
+  )
+
+Components 03_01
+Components name MUST be capitalized
+Anything that is not a string MUST be within {}
+  <Message color = 'purple' age = {50} msg = 'how are you?' minutes = {5}/>
+
+SkiDayCounter 03_03
+
+Another way to import libraries and then use shorter syntax
+  import React, {Component} from 'react'
+  import {render} from 'react-dom'
+
+  class SkiDayCounter extends Component{}
+
+To import all props and use shorter syntax
+  const {total, powder, backcountry, goal} = this.props
+  return (
+    <section>
+      <h1>Ski Days</h1>
+      <div><p>Total Days: {total}</p></div>
+      <div><p>Powder Days: {powder}</p></div>
+      <div><p>Back Country Days: {backcountry}</p></div>
+      <div><p>Goal: {goal}</p></div>
+    </section>
+
+Function Components 03_05
+  const SkiDayCounter = ({total, powder, backcountry, goal}) => {
+  	return(
+  		<section>
+  			<h1>Ski Days</h1>
+  			<div><p>Total Days: {total}</p></div>
+  			<div><p>Powder Days: {powder}</p></div>
+  			<div><p>Back Country Days: {backcountry}</p></div>
+  			<div><p>Goal: {goal}</p></div>
+  			<div><p>% to Goal: {calcGoalProgress(total, goal)}</p></div>
+  		</section>
+  	)
+  }
+
+Compose components 04_01
+wrap within a div when multiple components are rendered
+  render(
+    <div>
+      <Library />
+      <Library />
+    </div>,
+    document.getElementById('root')
+  )
+
+Or have one component called within another component
+
+const Book = ({title, author, pages}) => {
+	return (
+		<section>
+			<h2>{title}</h2>
+			<p>By: {author}</p>
+			<p>Pages: {pages} pages</p>
+		</section>
+	)
+}
+
+const Library = () => {
+	return (
+		<div>
+			<Book title = 'The Sun Also Rises' author = 'Ernest Hemingway' pages = {260}/>
+			<Book title = 'AAAA' author = 'A' pages = {260}/>
+			<Book title = 'BBBB' author = 'B' pages = {261}/>
+			<Book title = 'CCCC' author = 'C' pages = {262}/>
+		</div>
+	)
+}
+
+More interactive components (from DB)
+  let bookList = [
+  	{"title": "The Sun Also Rises", "author": "Ernest Hemingway", "pages": 260},
+  	{"title": "AAAA", "author": "A", "pages": 261},
+  	{"title": "BBBB", "author": "B", "pages": 262},
+  	{"title": "CCCC", "author": "C", "pages": 263},
+  	{"title": "ZZZZ", "author": "Z", "pages": 26300}
+  ]
+
+  const Library = ({books}) => {
+  	return (
+  		<div>
+  			{books.map(
+  				(book, i) => <Book
+  												key = {i}
+  												title = {book.title}
+  												author = {book.author}
+  												pages = {book.pages}/>
+  			)}
+  		</div>
+  	)
+  }
+
+Component State 04_03
+States are asynchronous but you can use call back functions as needed
+
+Pass State Props 04_05
+Refer to Lifting State Up in the documentation
+
+Conditional rendering 04_05
+
+Component Lifecycle 05_01 (https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+Mount - added to the dom
+Unmount - taken away
+These component lyfecycle functions are only available when using the class syntax
+Constructure is a great place to initialize, called before render before the component is mounter
+
+componentDidMount(){
+  console.log('component is mounted')
+}
+
+componentDidUpdate(){
+  console.log('component is updated')
+}
+
+Forms 05_04
+  class FavoriteColorForm extends React.Component {
+  	state = { value: ''}
+
+  	newColor = e =>
+  		this.setState({ value: e.target.value })
+
+  	submit = e => {
+      //${this.state.value} template form
+  		console.log(`New Color: ${this.state.value}`)
+  		e.preventDefault()
+  	}
+
+  	render() {
+  		return (
+  			<form onSubmit={this.submit}>
+  				<label>Favorite Color:
+  					<input
+  						type="color"
+  						onChange={this.newColor}/>
+  				</label>
+  				<button>Submit</button>
+  			</form>
+  		)
+  	}
+  }
+
+  render(
+  	<FavoriteColorForm />,
+  	document.getElementById('root')
+  )
+
+Default Props 05_05
+static defaultProps = {
+  books: [
+    {"title": "Tahoe Tales", "author" : "Chet Whitley", "pages": 1000}
+  ]
+}
+ npm install prop-types --save
+
+ Library.propTypes = {
+	 books: PropTypes.array
+ }
+
+ Book.propTypes = {
+	 title: PropTypes.string,
+	 author: PropTypes.string,
+	 pages: PropTypes.number,
+	 freeBookmark: PropTypes.bool
+ }
+
+ Modularizing Code 05_05
+
+ class files at the end: export default Library
+ functions: export const NotHiring = () => ....
+
+ Imports:
+   import {Book} from './Book'
+   import {Hiring} from './Hiring'
+   import {NotHiring} from './NotHiring'
+
+Build the app for production
+npm run build
+sudo npm install serve -g
+serve -s build
+localhost:5000
+
+
+Next Steps
+- React recipes
+- React: Lifecycles
+- React: Components, Context, and Accessibility
