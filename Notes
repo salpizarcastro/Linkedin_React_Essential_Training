@@ -9,8 +9,8 @@ chrome extensions > React developer tools > Add to Chrome
 
 Download & install Node.js (https://nodejs.org/en/)
 
+github.com/facebook/create-react-app
 Create React App: sudo npm install -g create-react-app
-
 Create a new project: create-react-app react-is-fun
 Start host:
   cd react-is-fun
